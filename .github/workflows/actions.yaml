@@ -1,4 +1,4 @@
-name: run scrape_bpom.py
+name: run scrape_bpom_direct_api.py
 
 on:
   schedule:
@@ -25,7 +25,7 @@ jobs:
           pip install -r requirements.txt
           
       - name: execute py script # run main.py
-        run: python scrape_bpom.py
+        run: python scrape_bpom_direct_api.py
           
       - name: commit files
         run: |

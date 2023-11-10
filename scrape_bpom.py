@@ -112,8 +112,6 @@ while True:
         wait.until(EC.staleness_of(next_button))
 
     except Exception as e:
-        # Handle the exception when there is no "next" button or any other error
-        print(f"An error occurred: {str(e)}")
         pass
 
     page_count += 1
