@@ -8,8 +8,7 @@ data_list = []
 df = pd.DataFrame()
 offset = 1
 
-# for i in range(math.ceil(24703 / 10)):
-for i in range(5):
+for i in range(math.ceil(24703 / 10)):
     print(f'============= PAGE {i+1} ============= \n')
 
     url = 'https://cekbpom.pom.go.id/prev_next_pagination_obat'
