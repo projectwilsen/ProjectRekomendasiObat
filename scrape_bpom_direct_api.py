@@ -79,7 +79,7 @@ for i in range(math.ceil(24703 / 10)):
                     if data_list:
                         df_temp = pd.DataFrame(data_list)
                         df = pd.concat([df, df_temp], ignore_index=True)
-                        df_temp.to_csv(f'obat_bpom_page_{i+1}.csv', index=False)
+                        # df_temp.to_csv(f'obat_bpom_page_{i+1}.csv', index=False)
 
                 else:
                     print(f"No detail info: {response.status_code}")
