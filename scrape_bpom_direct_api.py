@@ -94,6 +94,7 @@ for i in range(2):
 
     print(f'============= DONE PAGE {i+1} ============= \n \n \n')
 
+df.drop_duplicates(inplace = True)
 df.to_csv(f'obat.csv', index=False)
 
 
