@@ -3,13 +3,28 @@ import json
 from bs4 import BeautifulSoup
 import math
 import pandas as pd
+from googleapiclient.discovery import build
+from google.oauth2 import service_account
+import os
+from dotenv import load_dotenv
+import json
+
+load_dotenv()
+
+SERVICE_ACCOUNT_FILE = os.getenv('SERVICE_ACCOUNT_FILE')
+SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
+creds = service_account.Credentials.from_service_account_info(json.loads(SERVICE_ACCOUNT_FILE), scopes=SCOPES)
+
+SAMPLE_SPREADSHEET_ID = '19ksKPeIGr9yJVhD507SvtmKWN6UxSxZmx6Ei13IPZUQ'
+
+service = build('sheets', 'v4', credentials=creds)
+sheet = service.spreadsheets()
 
 data_list = []
-df = pd.DataFrame()
 offset = 1
 
 for i in range(math.ceil(24703 / 10)):
-    print(f'============= PAGE {i+1} ============= \n')
+    print(f'============= START PAGE {i+1} OFFSET {offset} ============= \n')
 
     url = 'https://cekbpom.pom.go.id/prev_next_pagination_obat'
 
@@ -31,7 +46,6 @@ for i in range(math.ceil(24703 / 10)):
                 # Extract 'PRODUCT_ID' and 'APPLICATION_ID'
                 product_id = product_data.get('PRODUCT_ID', '')
                 application_id = product_data.get('APPLICATION_ID', '')
-                print(product_id, application_id)
 
                 url =  'https://cekbpom.pom.go.id/get_detail_produk_obat'
                 data = {
@@ -72,14 +86,7 @@ for i in range(math.ceil(24703 / 10)):
                         # Create a new dictionary with lowercase keys and underscores
                     final_dict = {key.lower().replace(' ', '_'): value for key, value in preprocessed_dict.items()}
 
-                    print(final_dict)
-
                     data_list.append(final_dict)
-
-                    if data_list:
-                        df_temp = pd.DataFrame(data_list)
-                        df = pd.concat([df, df_temp], ignore_index=True)
-                        # df_temp.to_csv(f'obat_bpom_page_{i+1}.csv', index=False)
 
                 else:
                     print(f"No detail info: {response.status_code}")
@@ -88,13 +95,37 @@ for i in range(math.ceil(24703 / 10)):
     except:
         pass
 
+    if data_list:
+        existing_header = sheet.values().get(spreadsheetId = SAMPLE_SPREADSHEET_ID, range = "bpom!A1:K1").execute()
+        header_row = list(data_list[0].keys())
+
+        if 'values' not in existing_header:
+            values = [header_row]
+            body = {'values': values}
+            sheet.values().append(spreadsheetId=SAMPLE_SPREADSHEET_ID, range='bpom', valueInputOption='RAW', body=body).execute()
+        elif existing_header['values'][0] != header_row:
+            values = [header_row]
+            body = {'values': values}
+            sheet.values().update(spreadsheetId=SAMPLE_SPREADSHEET_ID, range='bpom!A1:Z1', valueInputOption='RAW', body=body).execute()
+
+
+        # Append data
+        values = []
+        for data in data_list:
+            diproduksi_oleh_value = data.get('diproduksi_oleh', None)
+
+            # Create a list of values, including 'diproduksi_oleh' with the retrieved or default value
+            row_values = [
+                data[key] if key != 'diproduksi_oleh' else diproduksi_oleh_value
+                for key in header_row
+            ]
+            values.append(row_values)
+
+        # Append data rows
+        body = {'values': values[1:]}
+        sheet.values().append(spreadsheetId=SAMPLE_SPREADSHEET_ID, range='bpom', valueInputOption='RAW', body=body).execute()
+
+        print(f"{len(data_list)} data appended successfully \n")
+
     offset += 10
     data_list = []
-
-    print(f'============= DONE PAGE {i+1} ============= \n \n \n')
-
-df.drop_duplicates(inplace = True)
-df.to_csv(f'obat.csv', index=False)
-
-
-

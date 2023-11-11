@@ -1,4 +1,4 @@
-name: run scrape_bpom_direct_api.py
+name: run scrape_bpom_direct_api_v2.py
 
 on:
   schedule:
@@ -25,7 +25,9 @@ jobs:
           pip install -r requirements.txt
           
       - name: execute py script # run main.py
-        run: python scrape_bpom_direct_api.py
+        env:
+          SERVICE_ACCOUNT_FILE: ${{ secrets.SERVICE_ACCOUNT_FILE }}
+        run: python scrape_bpom_direct_api_v2.py
           
       - name: commit files
         run: |
