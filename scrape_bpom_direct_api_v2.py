@@ -21,7 +21,7 @@ service = build('sheets', 'v4', credentials=creds)
 sheet = service.spreadsheets()
 
 data_list = []
-offset = 3791
+offset = 6501
 
 for i in range(math.ceil(24703 / 10)):
     print(f'============= START PAGE {i+1} OFFSET {offset} ============= \n')
