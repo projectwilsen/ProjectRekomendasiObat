@@ -21,7 +21,7 @@ service = build('sheets', 'v4', credentials=creds)
 sheet = service.spreadsheets()
 
 data_list = []
-offset = 1
+offset = 271
 
 for i in range(math.ceil(24703 / 10)):
     print(f'============= START PAGE {i+1} OFFSET {offset} ============= \n')
@@ -109,16 +109,20 @@ for i in range(math.ceil(24703 / 10)):
             sheet.values().update(spreadsheetId=SAMPLE_SPREADSHEET_ID, range='bpom!A1:Z1', valueInputOption='RAW', body=body).execute()
 
 
-        # Append data
         values = []
-        for data in data_list:
-            diproduksi_oleh_value = data.get('diproduksi_oleh', None)
+        keys_to_handle = ['diproduksi_oleh', 'pemberi_lisensi'] 
 
-            # Create a list of values, including 'diproduksi_oleh' with the retrieved or default value
-            row_values = [
-                data[key] if key != 'diproduksi_oleh' else diproduksi_oleh_value
-                for key in header_row
-            ]
+        for data in data_list:
+            row_values = []
+
+            for key in header_row:
+                if key in keys_to_handle:
+                    value = data.get(key, None)
+                else:
+                    value = data[key]
+
+                row_values.append(value)
+
             values.append(row_values)
 
         # Append data rows
