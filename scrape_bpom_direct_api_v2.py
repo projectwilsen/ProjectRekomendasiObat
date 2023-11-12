@@ -21,9 +21,10 @@ service = build('sheets', 'v4', credentials=creds)
 sheet = service.spreadsheets()
 
 data_list = []
-offset = 9701
+offset = 19341
 
-for i in range(math.ceil(24703 / 10)):
+# for i in range(math.ceil(24703 / 10)):
+for i in range(500):
     print(f'============= START PAGE {i+1} OFFSET {offset} ============= \n')
 
     url = 'https://cekbpom.pom.go.id/prev_next_pagination_obat'
