@@ -21,7 +21,7 @@ service = build('sheets', 'v4', credentials=creds)
 sheet = service.spreadsheets()
 
 data_list = []
-offset = 19341
+offset = 24031
 
 # for i in range(math.ceil(24703 / 10)):
 for i in range(500):
