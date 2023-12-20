@@ -22,10 +22,10 @@ service = build('sheets', 'v4', credentials=creds)
 sheet = service.spreadsheets()
 
 data_list = []
-offset = 51
+offset = 1551
 
 # for i in range(math.ceil(24703 / 10)):
-for i in range(150):
+for i in range(50):
     print(f'============= START PAGE {i+1} OFFSET {offset} ============= \n')
 
     url = 'https://cekbpom.pom.go.id/prev_next_pagination_obat_kuasi'
@@ -117,7 +117,7 @@ for i in range(150):
 
 
         values = []
-        keys_to_handle = ['pendaftar_&_importir','diproduksi_oleh', 'pemberi_lisensi','pendaftar','pabrik','pemberi_kontrak','penerima_kontrak', 'pengemas_primer'] 
+        keys_to_handle = ['pendaftar_&_importir','diproduksi_oleh', 'pemberi_lisensi','pendaftar','pabrik','pemberi_kontrak','penerima_kontrak', 'pengemas_primer', 'pengemas_sekunder'] 
 
         for data in data_list:
             row_values = []
