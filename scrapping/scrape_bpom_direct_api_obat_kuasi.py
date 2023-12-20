@@ -15,20 +15,20 @@ SERVICE_ACCOUNT_FILE = os.getenv('SERVICE_ACCOUNT_FILE')
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
 creds = service_account.Credentials.from_service_account_info(json.loads(SERVICE_ACCOUNT_FILE), scopes=SCOPES)
 
-SAMPLE_SPREADSHEET_ID = '14vUomCGwhSPZp8rBn3uGlUHbP-DU-x738_uJUjRsB2Q'
+SAMPLE_SPREADSHEET_ID = '1lJtsY98dvQZWfFbSE83sxLmTEa0GGKHSAd5qku7ECb8'
 # SAMPLE_SPREADSHEET_ID = '19ksKPeIGr9yJVhD507SvtmKWN6UxSxZmx6Ei13IPZUQ'
 
 service = build('sheets', 'v4', credentials=creds)
 sheet = service.spreadsheets()
 
 data_list = []
-offset = 201
+offset = 1
 
 # for i in range(math.ceil(24703 / 10)):
-for i in range(500):
+for i in range(150):
     print(f'============= START PAGE {i+1} OFFSET {offset} ============= \n')
 
-    url = 'https://cekbpom.pom.go.id/prev_next_pagination_obat_tradisional'
+    url = 'https://cekbpom.pom.go.id/prev_next_pagination_obat_kuasi'
 
     data = {
         'offset': offset,
