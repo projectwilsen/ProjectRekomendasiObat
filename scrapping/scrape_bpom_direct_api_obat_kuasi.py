@@ -22,7 +22,7 @@ service = build('sheets', 'v4', credentials=creds)
 sheet = service.spreadsheets()
 
 data_list = []
-offset = 1
+offset = 51
 
 # for i in range(math.ceil(24703 / 10)):
 for i in range(150):
@@ -45,7 +45,7 @@ for i in range(150):
         if response.status_code == 200:
             data = response.json()
             # print(data)
-            for product_data in data['data_obat_tradisional']:
+            for product_data in data['data_obat_kuasi']:
                 # Extract 'PRODUCT_ID' and 'APPLICATION_ID'
                 product_id = product_data.get('PRODUCT_ID', '')
                 application_id = product_data.get('APPLICATION_ID', '')
@@ -117,7 +117,7 @@ for i in range(150):
 
 
         values = []
-        keys_to_handle = ['pendaftar_&_importir','diproduksi_oleh', 'pemberi_lisensi','pendaftar','pabrik','pemberi_kontrak',	'penerima_kontrak'] 
+        keys_to_handle = ['pendaftar_&_importir','diproduksi_oleh', 'pemberi_lisensi','pendaftar','pabrik','pemberi_kontrak','penerima_kontrak', 'pengemas_primer'] 
 
         for data in data_list:
             row_values = []
