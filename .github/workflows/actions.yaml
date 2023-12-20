@@ -27,7 +27,7 @@ jobs:
       - name: execute py script # run main.py
         env:
           SERVICE_ACCOUNT_FILE: ${{ secrets.SERVICE_ACCOUNT_FILE }}
-        run: python scrape_bpom_direct_api_v2.py
+        run: python scrape_bpom_direct_api_obat_tradisional.py
           
       # - name: commit files
       #   run: |
