@@ -15,13 +15,14 @@ SERVICE_ACCOUNT_FILE = os.getenv('SERVICE_ACCOUNT_FILE')
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
 creds = service_account.Credentials.from_service_account_info(json.loads(SERVICE_ACCOUNT_FILE), scopes=SCOPES)
 
-SAMPLE_SPREADSHEET_ID = '19ksKPeIGr9yJVhD507SvtmKWN6UxSxZmx6Ei13IPZUQ'
+SAMPLE_SPREADSHEET_ID = '14vUomCGwhSPZp8rBn3uGlUHbP-DU-x738_uJUjRsB2Q'
+# SAMPLE_SPREADSHEET_ID = '19ksKPeIGr9yJVhD507SvtmKWN6UxSxZmx6Ei13IPZUQ'
 
 service = build('sheets', 'v4', credentials=creds)
 sheet = service.spreadsheets()
 
 data_list = []
-offset = 1
+offset = 21
 
 # for i in range(math.ceil(24703 / 10)):
 for i in range(500):
@@ -43,10 +44,13 @@ for i in range(500):
 
         if response.status_code == 200:
             data = response.json()
-            for product_data in data['data_obat']:
+            # print(data)
+            for product_data in data['data_obat_tradisional']:
                 # Extract 'PRODUCT_ID' and 'APPLICATION_ID'
                 product_id = product_data.get('PRODUCT_ID', '')
                 application_id = product_data.get('APPLICATION_ID', '')
+
+                # print(product_id, application_id)
 
                 url =  'https://cekbpom.pom.go.id/get_detail_produk_obat'
                 data = {
@@ -58,6 +62,7 @@ for i in range(500):
                 if response.status_code == 200:
                     soup = BeautifulSoup(response.text, 'html.parser')
                     rows = soup.find_all('tr')
+                    # print(rows)
                     ori_data_dict = {}
 
                     for row in rows:
@@ -86,6 +91,7 @@ for i in range(500):
 
                         # Create a new dictionary with lowercase keys and underscores
                     final_dict = {key.lower().replace(' ', '_'): value for key, value in preprocessed_dict.items()}
+                    # print(final_dict)
 
                     data_list.append(final_dict)
 
@@ -125,6 +131,8 @@ for i in range(500):
                 row_values.append(value)
 
             values.append(row_values)
+
+
 
         # Append data rows
         body = {'values': values[1:]}
