@@ -21,7 +21,7 @@ SAMPLE_SPREADSHEET_ID = '14vUomCGwhSPZp8rBn3uGlUHbP-DU-x738_uJUjRsB2Q'
 service = build('sheets', 'v4', credentials=creds)
 sheet = service.spreadsheets()
 data_list = []
-offset = 8951
+offset = 11461
 
 # for i in range(math.ceil(24703 / 10)):
 for i in range(5000):
