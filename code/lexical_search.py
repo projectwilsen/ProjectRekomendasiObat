@@ -15,7 +15,8 @@ nltk.download('averaged_perceptron_tagger')
 
 class LexicalSearch:
 
-    def __init__(self, corpus_tokenized_path='corpus_sparse_tokenized_all_data_ordered.pkl'):
+    # def __init__(self, corpus_tokenized_path='data/data_with_prepro/corpus_sparse_tokenized_all_data_ordered.pkl'):
+    def __init__(self, corpus_tokenized_path='data/data_lama/corpus_sparse_tokenized_all_data_ordered.pkl'):
         self.corpus_tokenized_path = corpus_tokenized_path
         self.stop_words = set(stopwords.words('indonesian'))
         self.factory = StemmerFactory()
@@ -135,15 +136,14 @@ class LexicalSearch:
             result.append(corpus[id])
         return result
     
-df = pd.read_csv('/content/data_halodoc_ordered.csv')
+# TODO: data_with_prepro nda jalan, kemungkinan ini untuk research yang qe
+df = pd.read_csv('data/data_lama/data_halodoc_ordered.csv', sep = ';')
+
 corpus = df['uses'].to_list()
-query = 'obat batuk'
+query = 'obat batuk berdahak'
 model = LexicalSearch()
-sparse_rank = model.rank(corpus, query)
-print(sparse_rank)
+# sparse_rank = model.rank(corpus, query)
 result = model.get_result(corpus, query)
 for i in result:
   print("=====================================")
-  print(i[:30])
-
-print(result)
+  print(i)

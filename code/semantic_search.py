@@ -13,11 +13,11 @@ import time
 
 class SemanticSearch:
 
-    def __init__(self, corpus_embeddings_path='corpus_dense_embeddings_all_data_ordered.npy'):
+    def __init__(self, corpus_embeddings_path='data/data_lama/corpus_dense_embeddings_all_data_ordered.npy'):
         self.corpus_embeddings_path = corpus_embeddings_path
         self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
-    def load_pretrained(self, from_pretrained:str="indobenchmark/indobert-base-p1"):
+    def load_pretrained(self, from_pretrained:str="sentence-transformers/all-mpnet-base-v2"):
         self.tokenizer = AutoTokenizer.from_pretrained(from_pretrained)
         self.model = AutoModel.from_pretrained(from_pretrained)
         self.model.to(self.device)
@@ -128,9 +128,9 @@ class SemanticSearch:
         return result
     
 
-df = pd.read_csv('data_halodoc_ordered.csv')
+df = pd.read_csv('data/data_lama/data_halodoc_ordered.csv', sep = ';')
 corpus = df['uses'].to_list()
-query = 'obat untuk meredakan demam'
+query = 'obat batuk berdahak'
 model = SemanticSearch()
 model.load_pretrained()
 # dense_rank = model.rank(corpus, query)

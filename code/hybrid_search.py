@@ -28,9 +28,9 @@ def reciprocal_rank_fusion(semantic_rank, lexical_rank, k):
 
   return reciprocal_rank_fusion
 
-df = pd.read_csv('data_halodoc_ordered.csv')
+df = pd.read_csv('data/data_lama/data_halodoc_ordered.csv', sep = ';')
 corpus = df['uses'].to_list()
-query = "susu untuk ibu hamil"
+query = "obat batuk berdahak"
 lexical_model = LexicalSearch()
 lexical_rank = lexical_model.rank(corpus, query)
 semantic_model = SemanticSearch()
